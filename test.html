@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Create Event API</title>
+</head>
+<body>
+    <h1>Create Event API Tester</h1>
+
+    <button onclick="testCreateEventAPI()">Test Create Event API</button>
+
+    <script>
+        const testCreateEventAPI = async () => {
+            const eventData = {
+                summary: 'Meeting with Team',
+                description: 'Discuss project updates',
+                startDateTime: '2024-02-10T09:00:00',
+                endDateTime: '2024-02-10T10:00:00',
+                timeZone: 'Asia/Kolkata',
+            };
+
+            const userTokens = [
+                {
+                    "access_token": "ya29.a0AfB_byCYl13anDsiPT6fp6BLOWxBNf5XKzlYJE8QGMXMQb5xyQmkQtCOIFVPXhoy7O-SKC8uQMgT-wqUXYInT9o7g_dF48VHoEDVDJZv4F_M6AkxBp9fllo42TUV2KFlcET8BVXXRXaN0A5oHPM3ZloWLPc8J0yAZMUqaCgYKAaQSARISFQHGX2Mi3z1HZVjIGzUoElDi8B8Ofg0171",
+                    "refresh_token": "1//0g1s6MKvVGBHNCgYIARAAGBASNwF-L9IrLZ1Fe2u5OImjXnHrpKCuwsv6Dv7AzHmesByJI0QCSS90HHyIqoUCCQAE4p_wY5DyaVc",
+                    "scope": "https://www.googleapis.com/auth/calendar",
+                    "token_type": "Bearer",
+                    "expiry_date": 1706959080920
+                },
+                {
+                    "access_token": "ya29.a0AfB_byCAzDVqYQgMKkvU6-oMea3ieGhTRvxvjwETxgq7nxwfS-6EANXkumVe6scyDvlmEk73fkOkwXEwDYOic60tm4PoRzpFf-n5zYSagMHAMRqms8IuWSDMaMAFL2CujmJVSSHtlBSu_IZwY4tNPBnoqXs1cClvdzAXaCgYKASMSARMSFQHGX2MijM2tN-SjFra5ub09asFttg0171",
+                    "refresh_token": "1//0gdRkx8WGe1ErCgYIARAAGBASNwF-L9IrNVJ9CEVOUVWYtInxiN8IaeZnC4jj8QS8OnbaofpjAoBYQ3q26fgNtkxJZLrIiql7qBU",
+                    "scope": "https://www.googleapis.com/auth/calendar",
+                    "token_type": "Bearer",
+                    "expiry_date": 1706962424881
+                },
+            ];
+
+            try {
+                const response = await fetch('http://localhost:3000/create_event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        eventData,
+                        userTokens,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Create Event API Response:', data);
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        };
+    </script>
+</body>
+</html>

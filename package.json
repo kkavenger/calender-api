@@ -1,0 +1,22 @@
+{
+  "name": "calender-api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "kunal mishra",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "googleapis": "^131.0.0",
+    "nodemon": "^3.0.3"
+  }
+}
