@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Calendars</title>
+</head>
+<body>
+
+    <form id="syncCalendarsForm">
+        <button type="button" onclick="syncCalendars()">Sync Calendars</button>
+    </form>
+
+    <script>
+        async function syncCalendars() {
+            const userTokens = [
+                {
+                    "access_token": "ya29.a0AfB_byAtoXATXd9vR2anZAg_D_3FadRGMpcXTYIpGX4d8PzWNuYsCMQHJibGbCgKIhnh9yD6UrPVkUjsXljjrujPU_vdw3fQPYCQtAFj3sd-FMqnQ9VOC-hLH8_XjtXeB60eL9lYbY7_sKEAvmd7VNgQpY4ZsTebaDEQaCgYKARkSARISFQHGX2MiANOD_Uc8ZErMRf8C5aP9bg0171",
+                    "refresh_token": "1//0gdHyar4tsDocCgYIARAAGBASNwF-L9IrP7uj4IzTqAi-nzaIQUlY1-ze2JnsHxoKI7sS4QnKJ25Vt8unacpRtN8jC2a5knUbC24",
+                    "scope": "https://www.googleapis.com/auth/calendar",
+                    "token_type": "Bearer",
+                    "expiry_date": 1707044838856
+                },
+                {
+                    "access_token": "ya29.a0AfB_byB3sFjkiWM086_qyJihXEnUZE2hWKTq8_PXbnZ70DO6g-JvQH3vN0lxrXooppv4URSd0WBCtfiWr0YklERqfXNT2yayvwhrNYdnhjFMcVVtmXjxD7idsfh6epXOjV3UflRdJa3Zzw9ESQx5M88Bx7IwBJ3gbAbLaCgYKAZISARMSFQHGX2Mi3A3Wnfj0kApcNcj3tZCZlg0171",
+                    "refresh_token": "1//0gC687-lJjdj8CgYIARAAGBASNwF-L9IrgUHUGTqzM12vNVHRj1W5VkZajITDJK21y_124a3V6mqWjh9yYn3Jad1fPIVNQM-s5gg",
+                    "scope": "https://www.googleapis.com/auth/calendar",
+                    "token_type": "Bearer",
+                    "expiry_date": 1707044884683
+                },
+            ];
+
+            const response = await fetch('http://localhost:3000/get_calendars', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ users: userTokens }),
+            });
+
+            const result = await response.json();
+            console.log(result);
+            // Handle the result as needed
+        }
+    </script>
+
+</body>
+</html>

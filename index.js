@@ -55,7 +55,6 @@ const createOAuth2Client = (tokens) => {
 
 const fetchUserEvents = async (oauth2Client) => {
     const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
-    console.log(calendar);
 
     const eventsResponse = await calendar.events.list({
         calendarId: 'primary',
@@ -128,6 +127,29 @@ app.post("/create_event", async(req,res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
+
+app.delete("/delete_event", async (req, res) => {
+    try {
+        const { userToken, eventId } = req.body;
+    
+        if (!userToken || !eventId) {
+            return res.status(400).json({ error: 'Both userToken and eventId parameters are required.' });
+        }
+
+        const oauth2Client = createOAuth2Client(userToken);
+        const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+        await calendar.events.delete({
+            calendarId: 'primary', // Adjust as needed based on your requirements
+            eventId: eventId,
+        });
+
+        res.json({ message: 'Event deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting event:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 app.listen(port, () => {
     console.log("Server started on port",port);
