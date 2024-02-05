@@ -3,7 +3,9 @@ import { google } from 'googleapis'
 import dotenv from 'dotenv'
 import dayjs from 'dayjs'
 import cors from 'cors'
+import axios from 'axios'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
 
 dotenv.config({})
 
@@ -16,6 +18,16 @@ const app = express()
 app.use(cors());
 app.use(bodyParser.json());
 
+mongoose
+.connect(process.env.MONGODB_URL)
+.then(() => {
+    console.log("Connected to Database")
+})
+.catch((err) => {
+    console.log(err.message);
+    console.log("Error connecting to Database");
+});
+
 const port = process.env.NODE_ENV || 3000
 
 const oauth2Client = new google.auth.OAuth2(
@@ -23,7 +35,8 @@ const oauth2Client = new google.auth.OAuth2(
     process.env.CLIENT_SECRET,
     process.env.REDIRECT_URL
 )
-const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar',
+                'https://www.googleapis.com/auth/userinfo.email'];
 
 app.get("/google", (req ,res) => {
     const url = oauth2Client.generateAuthUrl({
@@ -37,6 +50,13 @@ app.get("/google/redirect", async(req,res) => {
     
     const code = req.query.code;
     const { tokens } = await oauth2Client.getToken(code);
+    const response = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
+      headers: {
+        'Authorization': `Bearer ${tokens.access_token}`,
+        'Accept': 'application/json'
+      }
+    });
+    console.log(response.data.email);
     res.send({
         msg: tokens,
     });
@@ -68,7 +88,6 @@ const fetchUserEvents = async (oauth2Client) => {
 };
 
 const createEventForUser = async (oauth2Client, eventData) => {
-    console.log(eventData);
     const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
     const result = await calendar.events.insert({
